@@ -93,16 +93,16 @@ contract BuildersDollar is ERC20Upgradeable, OwnableUpgradeable, ReentrancyGuard
         pool.withdraw(address(token), amount, owner());
         emit ClaimedYield(amount);
 
-        try this.claimRewards() {} catch Error(string memory) {
+        try this.claimRewards() {}
+        catch Error(string memory) {
             revert ClaimRewardsFailed();
         } catch (bytes memory) {
             revert ClaimRewardsFailedLowLevel();
         }
-
     }
 
     function claimRewards() external nonReentrant {
-        address[] memory assets;
+        address[] memory assets = new address[](1);
         assets[0] = address(aToken);
         (address[] memory rewardsList, uint256[] memory claimedAmounts) = rewards.claimAllRewards(assets, owner());
 
